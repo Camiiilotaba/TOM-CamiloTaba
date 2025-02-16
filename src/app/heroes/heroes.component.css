@@ -1,0 +1,99 @@
+/* HeroesComponent's private CSS styles */
+.heroes {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: .5rem;
+  margin: 1rem 0;
+  box-sizing: border-box;
+  background-color: #333;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  border-radius: 5px;
+}
+
+.heroes li {
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 1em;
+  background-color: #2a2a2a;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+span {
+  margin-right: 15px;
+}
+.heroes a {
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.heroes a:hover {
+  color: #ff5722;
+}
+
+.heroes .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  background-color: #ff5722;
+  padding: 0.4em 0.7em;
+  line-height: 1em;
+  border-radius: 4px;
+  font-weight: bold;
+  min-width: 24px;
+  text-align: center;
+}
+
+.add-button {
+  padding: .5rem 1.5rem;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  background-color: #444; /* Fondo oscuro */
+  color: white;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background-color: #ff5722; /* Naranja para hover */
+  color: white;
+}
+
+button.delete {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background-color: #444; /* Fondo oscuro */
+  color: white;
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.delete:hover {
+  background-color: #ff5722; /* Naranja para hover */
+  color: white;
+}
+
+button.delete:focus {
+  outline: none;
+}

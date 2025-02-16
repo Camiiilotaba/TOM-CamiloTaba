@@ -1,0 +1,11 @@
+<div class="search-box">
+  <label for="search">Search for a hero</label>
+  <input id="search" [(ngModel)]="searchTerm" (input)="search(searchTerm)" placeholder="e.g. Spiderman">
+</div>
+
+<div class="heroes-menu">
+  <a *ngFor="let hero of heroes" routerLink="/detail/{{hero.id}}">
+    <img [src]="hero.thumbnail.path + '.' + hero.thumbnail.extension" alt="{{hero.name}}">
+    {{hero.name}}
+  </a>
+</div>
