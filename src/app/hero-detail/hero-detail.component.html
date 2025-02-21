@@ -1,15 +1,12 @@
 <div *ngIf="hero">
   <h2>{{hero.name | uppercase}} Details</h2>
   
-  <!-- Mostrar el ID del héroe -->
   <div><span>id: </span>{{hero.id}}</div>
 
-  <!-- Mostrar la imagen del héroe -->
   <div *ngIf="hero.thumbnail">
     <img [src]="hero.thumbnail.path + '.' + hero.thumbnail.extension" alt="{{hero.name}}'s image" width="200"/>
   </div>
 
-  <!-- Mostrar la descripción del héroe -->
   <div *ngIf="hero.description">
     <p><strong>Description:</strong> {{hero.description}}</p>
   </div>

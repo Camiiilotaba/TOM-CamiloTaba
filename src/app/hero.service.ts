@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Hero } from './hero';
+import { Hero, ApiResponse } from './hero';
 import { MessageService } from './message.service';
 
 @Injectable({ providedIn: 'root' })
@@ -24,7 +24,7 @@ export class HeroService {
   /** GET heroes from Marvel API */
   getHeroes(offset: number = 0, limit: number = 20): Observable<Hero[]> {
     const url = `${this.marvelApiUrl}?ts=${this.ts}&apikey=${this.apiKey}&hash=${this.hash}&offset=${offset}&limit=${limit}`;
-    return this.http.get<any>(url)
+    return this.http.get<ApiResponse<Hero>>(url)
       .pipe(
         map(response => response.data.results),
         tap(_ => this.log('fetched heroes')),
@@ -35,13 +35,13 @@ export class HeroService {
 /** GET hero by id */
 getHero(id: number): Observable<Hero> {
   const url = `${this.marvelApiUrl}/${id}?ts=${this.ts}&apikey=${this.apiKey}&hash=${this.hash}`;
-  return this.http.get<any>(url).pipe(
+  return this.http.get<ApiResponse<Hero>>(url).pipe(
     map(response => {
       const heroData = response.data.results[0];
       return {
         id: heroData.id,
         name: heroData.name,
-        description: heroData.description ? heroData.description : 'No description available', // Usamos la descripción si existe
+        description: heroData.description || 'No description available',
         thumbnail: {
           path: heroData.thumbnail.path,
           extension: heroData.thumbnail.extension
@@ -53,14 +53,13 @@ getHero(id: number): Observable<Hero> {
   );
 }
 
-
   /** GET heroes whose name contains search term */
   searchHeroes(term: string): Observable<Hero[]> {
     if (!term.trim()) {
       return of([]);
     }
     const url = `${this.marvelApiUrl}?ts=${this.ts}&apikey=${this.apiKey}&hash=${this.hash}&nameStartsWith=${term}`;
-    return this.http.get<any>(url).pipe(
+    return this.http.get<ApiResponse<Hero>>(url).pipe(
       map(response => response.data.results),
       tap(x => x.length ?
         this.log(`found heroes matching "${term}"`) :
@@ -69,7 +68,7 @@ getHero(id: number): Observable<Hero> {
     );
   }
 
-  //////// Simulated Save methods //////////
+  //////// Simulated Save methods (ESTO NO LO USO //////////
 
   /** Simulate adding a hero */
   addHero(hero: Hero): Observable<Hero> {
@@ -84,7 +83,7 @@ getHero(id: number): Observable<Hero> {
   }
 
   /** Simulate updating a hero */
-  updateHero(hero: Hero): Observable<any> {
+  updateHero(hero: Hero): Observable<Hero> {
     this.log(`Simulated updating hero id=${hero.id}`);
     return of(hero);
   }
@@ -96,10 +95,12 @@ getHero(id: number): Observable<Hero> {
 
   /** Handle Http operation that failed */
   private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
+    return (error: unknown): Observable<T> => {
       console.error(error);
-      this.log(`${operation} failed: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : JSON.stringify(error);
+      this.log(`${operation} failed: ${errorMessage}`);
       return of(result as T);
     };
   }
+  
 }

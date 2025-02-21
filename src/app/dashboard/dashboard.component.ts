@@ -11,7 +11,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 })
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = []; 
-  searchTerm: string = ''; // Propiedad para almacenar el término de búsqueda
+  searchTerm: string = '';
   private searchTerms = new Subject<string>(); //emitir terminos de busqueda
 
   constructor(private heroService: HeroService) { }
@@ -19,22 +19,20 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getHeroes(); 
 
-    // Establecer la lógica de búsqueda
+    
     this.searchTerms.pipe(
       debounceTime(100), 
       distinctUntilChanged(), // solo busca si ha cambiado el texto
-      switchMap((term: string) => this.heroService.searchHeroes(term)) // Cambia al nuevo término de búsqueda
-    ).subscribe(heroes => this.heroes = heroes); // subscribirse a los heroes
+      switchMap((term: string) => this.heroService.searchHeroes(term)) 
+    ).subscribe(heroes => this.heroes = heroes); //subscribirse a los heroes
   }
 
-  // Método para obtener héroes aleatorios
   getHeroes(): void {
-    const randomOffset = Math.floor(Math.random() * 100); 
-    this.heroService.getHeroes(randomOffset, 5) // obtener 5 heroes aleatorios
-      .subscribe(heroes => this.heroes = heroes); // Asignar heroes
+    const randomOffset = Math.floor(Math.random() * 1500); 
+    this.heroService.getHeroes(randomOffset, 10) //obtener 10 heroes aleatorios
+      .subscribe(heroes => this.heroes = heroes);
   }
 
-  // Método para buscar heroes
   search(term: string): void {
     this.searchTerms.next(term); 
   }
